@@ -76,7 +76,7 @@ class FacebookAppEventsPlugin: FlutterPlugin, MethodCallHandler {
   }
 
   private fun handleGetApplicationId(call: MethodCall, result: Result) {
-    result.success(appEventsLogger.getApplicationId())
+    result.success(appEventsLogger.applicationId)
   }
  private fun handleGetAnonymousId(call: MethodCall, result: Result) {
     result.success(anonymousId)
@@ -112,9 +112,13 @@ class FacebookAppEventsPlugin: FlutterPlugin, MethodCallHandler {
     val payloadBundle = createBundleFromMap(payload)
 
     if (action != null) {
-      appEventsLogger.logPushNotificationOpen(payloadBundle, action)
+      if (payloadBundle != null) {
+        appEventsLogger.logPushNotificationOpen(payloadBundle, action)
+      }
     } else {
-      appEventsLogger.logPushNotificationOpen(payloadBundle)
+      if (payloadBundle != null) {
+        appEventsLogger.logPushNotificationOpen(payloadBundle)
+      }
     }
 
     result.success(null)
