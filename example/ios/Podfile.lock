@@ -1,0 +1,36 @@
+PODS:
+  - facebook_app_events (0.0.1):
+    - FBSDKCoreKit (~> 12.1.0)
+    - Flutter
+  - FBAEMKit (12.1.0):
+    - FBSDKCoreKit_Basics (= 12.1.0)
+  - FBSDKCoreKit (12.1.0):
+    - FBAEMKit (= 12.1.0)
+    - FBSDKCoreKit_Basics (= 12.1.0)
+  - FBSDKCoreKit_Basics (12.1.0)
+  - Flutter (2.5)
+
+DEPENDENCIES:
+  - facebook_app_events (from `.symlinks/plugins/facebook_app_events/ios`)
+
+SPEC REPOS:
+  trunk:
+    - FBAEMKit
+    - FBSDKCoreKit
+    - FBSDKCoreKit_Basics
+    - Flutter
+
+EXTERNAL SOURCES:
+  facebook_app_events:
+    :path: ".symlinks/plugins/facebook_app_events/ios"
+
+SPEC CHECKSUMS:
+  facebook_app_events: d734bc80228019d03bc07fb1426e4e44522aced1
+  FBAEMKit: 56c0bb9b42e3747cd82b67934f0c2b19325382ea
+  FBSDKCoreKit: 75368765d9c2303073145a7925dfaa9d60bcd77b
+  FBSDKCoreKit_Basics: 39865aff97e5f6951a78fb3e89dc4460e35e1895
+  Flutter: 4e094eefe76d76f60537272587a6eb1abcf12d09
+
+PODFILE CHECKSUM: 097b64e1c00903a097fa4231dd174c10dfb3b629
+
+COCOAPODS: 1.10.2
