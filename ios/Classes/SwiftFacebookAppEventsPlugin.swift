@@ -3,6 +3,13 @@ import UIKit
 import FBSDKCoreKit
 
 public class SwiftFacebookAppEventsPlugin: NSObject, FlutterPlugin {
+    var _appEvents: AppEvents? = nil
+    
+    override init() {
+        super.init()
+        _appEvents = AppEvents.shared
+    }
+    
     public static func register(with registrar: FlutterPluginRegistrar) {
         let channel = FlutterMethodChannel(name: "flutter.oddbit.id/facebook_app_events", binaryMessenger: registrar.messenger())
         let instance = SwiftFacebookAppEventsPlugin()
@@ -65,7 +72,7 @@ public class SwiftFacebookAppEventsPlugin: NSObject, FlutterPlugin {
     }
 
     private func handleClearUserData(_ call: FlutterMethodCall, result: @escaping FlutterResult) {
-        AppEvents.clearUserData()
+        _appEvents?.clearUserData()
         result(nil)
     }
 
@@ -80,7 +87,7 @@ public class SwiftFacebookAppEventsPlugin: NSObject, FlutterPlugin {
     }
 
     private func handleGetApplicationId(_ call: FlutterMethodCall, result: @escaping FlutterResult) {
-        result(Settings.appID)
+        result(Settings.shared.appID)
     }
 
     private func handleHandleGetAnonymousId(_ call: FlutterMethodCall, result: @escaping FlutterResult) {
@@ -91,11 +98,19 @@ public class SwiftFacebookAppEventsPlugin: NSObject, FlutterPlugin {
         let arguments = call.arguments as? [String: Any] ?? [String: Any]()
         let eventName = arguments["name"] as! String
         let parameters = arguments["parameters"] as? [String: Any] ?? [String: Any]()
+//         let newParams = parameters.map { (key: String, value: Any) in
+//            return (AppEvents.ParameterName(key), value)
+//         }
+        var newParams: [AppEvents.ParameterName: Any] = [:]
+        for (key, value) in parameters {
+            newParams[AppEvents.ParameterName(key)] = value
+        }
+        
         if arguments["_valueToSum"] != nil && !(arguments["_valueToSum"] is NSNull) {
             let valueToDouble = arguments["_valueToSum"] as! Double
-            AppEvents.logEvent(AppEvents.Name(eventName), valueToSum: valueToDouble, parameters: parameters)
+            AppEvents.logEvent(AppEvents.Name(eventName), valueToSum: valueToDouble, parameters: newParams)
         } else {
-            AppEvents.logEvent(AppEvents.Name(eventName), parameters: parameters)
+            AppEvents.logEvent(AppEvents.Name(eventName), parameters: newParams)
         }
 
         result(nil)
@@ -151,7 +166,7 @@ public class SwiftFacebookAppEventsPlugin: NSObject, FlutterPlugin {
 
     private func handleSetAutoLogAppEventsEnabled(_ call: FlutterMethodCall, result: @escaping FlutterResult) {
         let enabled = call.arguments as! Bool
-        Settings.isAutoLogAppEventsEnabled = enabled
+        Settings.shared.isAutoLogAppEventsEnabled = enabled
         result(nil)
     }
 
@@ -161,7 +176,7 @@ public class SwiftFacebookAppEventsPlugin: NSObject, FlutterPlugin {
         let state = arguments["state"] as? Int32 ?? 0
         let country = arguments["country"] as? Int32 ?? 0
 
-        Settings.setDataProcessingOptions(modes, country: country, state: state)
+        Settings.shared.setDataProcessingOptions(modes, country: country, state: state)
 
         result(nil)
     }
@@ -179,7 +194,7 @@ public class SwiftFacebookAppEventsPlugin: NSObject, FlutterPlugin {
     private func handleSetAdvertiserTracking(_ call: FlutterMethodCall, result: @escaping FlutterResult) {
         let arguments = call.arguments as? [String: Any] ?? [String: Any]()
         let enabled = arguments["enabled"] as! Bool
-        Settings.setAdvertiserTrackingEnabled(enabled)        
+        Settings.shared.isAdvertiserTrackingEnabled = enabled
         result(nil)
     }
 

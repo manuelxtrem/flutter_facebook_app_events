@@ -221,7 +221,7 @@ class FacebookAppEventsPlugin: FlutterPlugin, MethodCallHandler {
   private fun handlePurchased(call: MethodCall, result: Result) {
     var amount = (call.argument("amount") as? Double)?.toBigDecimal()
     var currency = Currency.getInstance(call.argument("currency") as? String)
-    val parameters = call.argument("parameters") as? Map<String, Object>
+    val parameters = call.argument("parameters") as? Map<String, Any>
     val parameterBundle = createBundleFromMap(parameters) ?: Bundle()
 
     appEventsLogger.logPurchase(amount, currency, parameterBundle)
